@@ -1,0 +1,223 @@
+---
+
+- hosts: localhost
+
+  vars:
+    homedir: /home/roman/
+    user: roman
+    group: roman
+    favourite_editor: vim.basic
+    git_config_global:
+      user.name: Roman Nakutnyi
+    git_repolist:
+      - "dev/ansible/ubuntu_config"
+      # for rethinking:
+      #- "dev/study/programming_study"
+      #- "dev/python/pomodoro-timer"
+      #- ".emacs.d/"
+
+    dconf_config:
+      "/org/compiz/profiles/unity/plugins/core/hsize": "2"
+      "/org/compiz/profiles/unity/plugins/core/vsize": "2"
+      # the space in the beginning of the value is necessary
+      # it prevents ansible from translating the value into python objects:
+      "/org/gnome/desktop/input-sources/sources": " [('xkb', 'us+colemak'), ('xkb', 'us'), ('xkb', 'ua'), ('xkb', 'ru')]"
+      "/com/canonical/indicator/power/show-percentage": "true"
+      "/org/gnome/desktop/interface/clock-show-seconds": "true"
+      #Below entries do not work, but at least I now know where to find and fix them:
+      #"/org/compiz/profiles/unity/plugins/grid/put-maximize-key": "<Control><Super>Up"
+      #"/org/compiz/profiles/unity/plugins/grid/right-maximize": "<Control><Super>Right"
+      #"/org/compiz/profiles/unity/plugins/grid/put-restore-key": "<Control><Super>Down"
+      #"/org/compiz/profiles/unity/plugins/grid/left-maximize": "<Control><Super>Left"
+
+
+  tasks:
+
+    - name: Add repositories
+      tags: apps
+      apt_repository:
+        repo: "{{ item }}"
+        state: present
+      with_items:
+        - 'ppa:kelleyk/emacs'
+        - 'ppa:bit-team/stable'
+      become: yes
+    
+    - name: install apt applications
+      tags: apps
+      apt:
+        name:
+          - emacs
+          # emacs plugins
+          - yaml-mode
+          # python plugins
+          - python3-tk
+          - pylint
+          - pylint3
+          # miscellaneous
+          - shutter
+          - vim
+          - goldendict
+          - firefox
+          - google-chrome-stable
+          - sqlite3
+          - anki
+          - vlc
+          # for external drive encryption
+          - gnome-disk-utility
+          - cryptsetup
+          # for backups
+          - backintime-qt4
+        state: latest
+      become: yes
+
+    - name: Install snap application 
+      snap:
+        name:
+          - telegram-desktop
+      become: yes
+
+    - name: Install plugins for ansible
+      apt:
+        name:
+          - dconf-editor
+          - python-pip
+        state: present
+      become: yes
+
+    - name: Install python plugins for ansible
+      become: yes
+      pip:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - psutil
+        - formencode
+
+    - name: Create directories
+      become: yes
+      file:
+        path: "{{ homedir }}/{{ item }}" 
+        state: directory
+        owner: "{{ user }}"
+        group: "{{ group }}"
+        mode: 0755
+      with_items:
+        - "Soft/goldendict"
+        - "dev/python"
+        - "dev/study"
+        - "backup"
+
+    - name: Ensure that autostart directory exists
+      file:
+        path: "/home/roman/.config/autostart/"
+        state: directory
+        owner: "{{ user }}"
+        group: "{{ group }}"
+        mode: 0755
+
+    - name: Set Startup applications
+      file:
+        state: link
+        force: yes
+        src: "/usr/share/applications/{{ item }}.desktop"
+        dest: "{{ homedir }}.config/autostart/{{ item }}.desktop"
+      with_items:
+        - goldendict
+        - firefox
+        - google-chrome
+
+    - name: Dconf configuration
+      tags: dconf
+      dconf:
+        key: "{{ item.key }}"
+        value: "{{ item.value }}"
+        state: present
+      with_dict: "{{ dconf_config }}"
+
+    - name: Use CapsLock as CapsLock, not Backspace
+      replace:
+        path: "/usr/share/X11/xkb/symbols/us"
+        regexp: '(^    key <CAPS> { \[    BackSpace,    BackSpace,       BackSpace,        BackSpace \] };)$'
+        replace: '//\1' 
+      become: true
+
+    - name: Allow core dumps for the user (for C debugging)
+      become: yes
+      pam_limits:
+        domain: "{{ user }}"
+        limit_type: soft
+        limit_item: core
+        value: 8192
+
+    - name: Tweak for Visual Studio Code
+      become: yes
+      sysctl:
+        name: fs.inotify.max_user_watches
+        value: 524288
+
+    - name: Allow for long command line history within a bash session
+      replace:
+        path: "{{ homedir }}/.bashrc"
+        regexp: '^HISTSIZE=.*$'
+        replace: 'HISTSIZE=10000'
+
+    - name: Allow for long command line history stored in a history file
+      replace:
+        path: "{{ homedir }}/.bashrc"
+        regexp: '^HISTFILESIZE=.*$'
+        replace: 'HISTFILESIZE=20000'
+
+    - name: Block distracting sites.
+      blockinfile: |
+        dest=/etc/hosts
+        content="#Block junk sites
+        127.0.0.1 www.youtube.com
+        127.0.0.1 www.facebook.com
+        127.0.0.1 bash.im"
+      become: yes
+
+    - name: Get vim location
+      shell: "which {{ favourite_editor }}"
+      register: command_output
+
+    - name: Set editor_path variable
+      set_fact:
+        editor_path: "{{ command_output.stdout_lines[0] }}"
+
+    - name: Setup selected editor in a config file
+      lineinfile:
+        create: yes
+        dest: "{{ homedir }}/.selected_editor"
+        regexp: "SELECTED_EDITOR="
+        line: 'SELECTED_EDITOR="{{ editor_path }}"'
+
+    - name: Setup selected editor in an environment variable
+      lineinfile:
+        dest: "{{ homedir }}/.bashrc"
+        regexp: "^export EDITOR="
+        line: 'export EDITOR="{{ editor_path }}"'
+
+    - name: Configure Git per repo
+      tags: git
+      git_config:
+        scope: local
+        repo: "{{ homedir }}{{ item }}"
+        name: user.email
+        value: nakutnyi@gmail.com
+      with_items: "{{ git_repolist }}"
+
+    - name: Add aliases
+      lineinfile:
+        dest: "{{ homedir }}/.bashrc"
+        line: "{{ item }}"
+      with_items:
+        - 'alias g="git"'
+        - 'alias conf="cd {{ homedir }}/dev/ansible/ubuntu_config/"'
+
+    - name: Add aliases autocompletion
+      blockinfile:
+        path: "{{ homedir }}/.bashrc"
+        block: "{{lookup('file', 'templates/bash_aliases_autocompletion')}}"
+        state: present
+        insertafter: '^.alias.*$'
