@@ -230,8 +230,8 @@
 #        state: present
 #        insertafter: EOF
 #
-    - name: Allow colourful prompt in bash
-      lineinfile:
-        path: "{{ homedir }}/.bashrc"
-        regexp: "#?force_color_prompt=yes"
-        line: "force_color_prompt=yes"
+#    - name: Allow colourful prompt in bash
+#      lineinfile:
+#        path: "{{ homedir }}/.bashrc"
+#        regexp: "#?force_color_prompt=yes"
+#        line: "force_color_prompt=yes"
