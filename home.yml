@@ -63,6 +63,8 @@
           - sqlite3
           - anki
           - vlc
+          # for development
+          - gitk
           # for external drive encryption
           - gnome-disk-utility
           - cryptsetup
@@ -72,6 +74,7 @@
       become: yes
 
     - name: Install snap application 
+      tags: apps
       snap:
         name:
           - telegram-desktop
