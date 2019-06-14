@@ -35,25 +35,30 @@
 
     - name: Add repositories
       tags: apps
+      become: yes
       apt_repository:
         repo: "{{ item }}"
         state: present
       with_items:
         - 'ppa:kelleyk/emacs'
         - 'ppa:bit-team/stable'
-      become: yes
     
     - name: install apt applications
       tags: apps
+      become: yes
       apt:
         name:
+          # tools
+          - dconf-editor
+          - gnome-panel #TODO: "gnome-desktop-item-edit {{ homedir }}/Desktop --create"
+          # emacs and its plugins
           - emacs
-          # emacs plugins
           - yaml-mode
           # python plugins
           - python3-tk
           - pylint
           - pylint3
+          - python-pip
           # miscellaneous
           - shutter
           - vim
@@ -71,22 +76,13 @@
           # for backups
           - backintime-qt4
         state: latest
-      become: yes
 
-    - name: Install snap application 
+    - name: Install snap applications
       tags: apps
+      become: yes
       snap:
         name:
           - telegram-desktop
-      become: yes
-
-    - name: Install plugins for ansible
-      apt:
-        name:
-          - dconf-editor
-          - python-pip
-        state: present
-      become: yes
 
     - name: Install python plugins for ansible
       become: yes
@@ -94,7 +90,9 @@
         name: "{{ item }}"
         state: present
       with_items:
+        # psutil is necessary for current ansible playbook
         - psutil
+        # TODO: not sure if it must be here
         - formencode
 
     - name: Create directories
@@ -139,11 +137,11 @@
       with_dict: "{{ dconf_config }}"
 
     - name: Use CapsLock as CapsLock, not Backspace
+      become: yes
       replace:
         path: "/usr/share/X11/xkb/symbols/us"
         regexp: '(^    key <CAPS> { \[    BackSpace,    BackSpace,       BackSpace,        BackSpace \] };)$'
         replace: '//\1' 
-      become: true
 
     - name: Allow core dumps for the user (for C debugging)
       become: yes
@@ -172,13 +170,13 @@
         replace: 'HISTFILESIZE=20000'
 
     - name: Block distracting sites.
+      become: yes
       blockinfile: |
         dest=/etc/hosts
         content="#Block junk sites
         127.0.0.1 www.youtube.com
         127.0.0.1 www.facebook.com
         127.0.0.1 bash.im"
-      become: yes
 
     - name: Get vim location
       shell: "which {{ favourite_editor }}"
