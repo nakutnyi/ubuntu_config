@@ -6,15 +6,34 @@
     homedir: /home/roman/
     user: roman
     group: roman
-    favourite_editor: vim.basic
+    favourite_editor: vim.basic #TODO: are you sure?
+    project_dir: "{{ homedir }}Projects/" #this is for job
+    #TODO: recheck global git config
     git_config_global:
       user.name: Roman Nakutnyi
-    git_repolist:
+      #user.email: rnakutnyi@jerasoft.net
+      color.ui: auto
+      core.pager: "less -FRSX"
+      branch.autosetupmerge: true
+      apply.whitespace: nowarn
+      status.showuntrackedfiles: all
+      push.default: tracking
+      rebase.stat: true
+      rerere.enabled: true
+      gitreview.remote: origin
+      alias.st: status
+      alias.pr: 'pull --rebase'
+      alias.co: checkout
+      alias.cm: commit
+      alias.dt: difftool
+      alias.gr: grep
+      alias.br: branch
+      diff.tool: meld
+    git_repolist_personal:
       - "dev/ansible/ubuntu_config"
-      # for rethinking:
-      #- "dev/study/programming_study"
-      #- "dev/python/pomodoro-timer"
-      #- ".emacs.d/"
+      - "dev/study/programming_study"
+      - "dev/python/pomodoro-timer"
+      - ".emacs.d/"
 
     dconf_config:
       "/org/compiz/profiles/unity/plugins/core/hsize": "2"
@@ -50,7 +69,7 @@
         name:
           # tools
           - dconf-editor
-          - gnome-panel #TODO: "gnome-desktop-item-edit {{ homedir }}/Desktop --create"
+          - gnome-panel #TODO: "gnome-desktop-item-edit {{ homedir }}/Desktop --create-new"
           # emacs and its plugins
           - emacs
           - yaml-mode
@@ -108,6 +127,7 @@
         - "dev/python"
         - "dev/study"
         - "backup"
+        - "Projects/vcs/"
 
     - name: Ensure that autostart directory exists
       file:
@@ -199,22 +219,34 @@
         regexp: "^export EDITOR="
         line: 'export EDITOR="{{ editor_path }}"'
 
-    - name: Configure Git per repo
+    - name: Personal git config
       tags: git
       git_config:
         scope: local
         repo: "{{ homedir }}{{ item }}"
         name: user.email
         value: nakutnyi@gmail.com
-      with_items: "{{ git_repolist }}"
+      with_items: "{{ git_repolist_personal }}"
 
-    - name: Add aliases
+    - name: Git config for job
+      tags: git
+      become: yes #Git config file in job repo has incorrect permissions
+      git_config:
+        repo: "{{ project_dir }}/vcs/"
+        scope: local
+        name: user.email
+        value: rnakutnyi@jerasoft.net
+
+    - name: Add aliases and tweaks
       lineinfile:
         dest: "{{ homedir }}/.bashrc"
         line: "{{ item }}"
       with_items:
         - 'alias g="git"'
         - 'alias conf="cd {{ homedir }}/dev/ansible/ubuntu_config/"'
+        # TODO: job stuff
+        - 'alias work="cd {{ project_dir }}/vcs" $$ source {{ project_dir }}/vcs-python-env/bin/activate'
+        - 'PATH="$PATH:/usr/local/bin/vendor/bin/"'
 
     - name: Add aliases autocompletion
       blockinfile:
