@@ -36,15 +36,16 @@
       - ".emacs.d/": "git@github.com:nakutnyi/emacs_config.git"
 
     dconf_config:
-      #TODO: below two lines are necessary only for Ubuntu 16.04
-      #"/org/compiz/profiles/unity/plugins/core/hsize": "2"
-      #"/org/compiz/profiles/unity/plugins/core/vsize": "2"
+      # Make workspaces same as in Ubuntu 18.04
+      "/org/compiz/profiles/unity/plugins/core/hsize": "1"
+      "/org/compiz/profiles/unity/plugins/core/vsize": "4"
       # The space in the beginning of the following value is necessary,
       # it prevents ansible from translating the value into python objects:
       "/org/gnome/desktop/input-sources/sources": " [('xkb', 'us+colemak'), ('xkb', 'us'), ('xkb', 'ua'), ('xkb', 'ru')]"
+      # Minor tweaks
       "/com/canonical/indicator/power/show-percentage": "true"
       "/org/gnome/desktop/interface/clock-show-seconds": "true"
-      #Below entries do not work, but at least I now know where to find and fix them:
+      # Below entries do not work, I leave them below for a reference for manual fix:
       #"/org/compiz/profiles/unity/plugins/grid/put-maximize-key": "<Control><Super>Up"
       #"/org/compiz/profiles/unity/plugins/grid/right-maximize": "<Control><Super>Right"
       #"/org/compiz/profiles/unity/plugins/grid/put-restore-key": "<Control><Super>Down"
@@ -227,6 +228,7 @@
 
     - name: Initialize personal Git repos
       git:
+        update: no
         repo: "{{ item.value }}"
         dest: "{{ homedir }}/{{ item.key }}"
       with_dict: "{{ git_repolist_personal }}"
