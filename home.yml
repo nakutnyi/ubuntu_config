@@ -269,16 +269,24 @@
         state: present
         insertafter: '^.alias.*$'
 
-#TODO: fix this
-#    - name: Add git branch output to your terminal prompt
-#      blockinfile:
-#        path: "{{ homedir }}/.bashrc"
-#        block: "{{lookup('file', files/git_branch_in_prompt')}}"
-#        state: present
-#        insertafter: EOF
-#
-#    - name: Allow colourful prompt in bash
-#      lineinfile:
-#        path: "{{ homedir }}/.bashrc"
-#        regexp: "#?force_color_prompt=yes"
-#        line: "force_color_prompt=yes"
+    - name: Allow colourful prompt in bash
+      lineinfile:
+        path: "{{ homedir }}/.bashrc"
+        regexp: "#?force_color_prompt=yes"
+        line: "force_color_prompt=yes"
+
+    - name: Add git branch output to your terminal prompt
+      #TODO: /home/roman/.bashrc must not be hardcoded
+      blockinfile: |
+        dest=/home/roman/.bashrc
+        content="# Add git branch if its present to PS1
+        parse_git_branch() {
+          git rev-parse --abbrev-ref HEAD 2> /dev/null
+        }
+        if [ \"$color_prompt\" = yes ]; then
+          PS1=$PS1'\[\033[01;33m\]($(parse_git_branch))\[\033[00m\]\$'
+        else
+          PS1=$PS1'$(parse_git_branch)\$'
+        fi
+        unset color_prompt force_color_prompt"
+
