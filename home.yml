@@ -11,7 +11,7 @@
     #TODO: recheck global git config
     git_config_global:
       user.name: Roman Nakutnyi
-      #user.email: rnakutnyi@jerasoft.net
+      user.email: rnakutnyi@jerasoft.net #TODO: this is for job
       color.ui: auto
       core.pager: "less -FRSX"
       branch.autosetupmerge: true
@@ -30,15 +30,16 @@
       alias.br: branch
       diff.tool: meld
     git_repolist_personal:
-      - "dev/ansible/ubuntu_config"
-      - "dev/study/programming_study"
-      - "dev/python/pomodoro-timer"
-      - ".emacs.d/"
+      - "dev/ansible/ubuntu_config": "git@github.com:nakutnyi/ubuntu_config.git"
+      - "dev/study/programming_study": "git@github.com:nakutnyi/programming_study.git"
+      - "dev/python/pomodoro-timer": "git@github.com:nakutnyi/pomodoro-timer.git"
+      - ".emacs.d/": "git@github.com:nakutnyi/emacs_config.git"
 
     dconf_config:
-      "/org/compiz/profiles/unity/plugins/core/hsize": "2"
-      "/org/compiz/profiles/unity/plugins/core/vsize": "2"
-      # the space in the beginning of the value is necessary
+      #TODO: below two lines are necessary only for Ubuntu 16.04
+      #"/org/compiz/profiles/unity/plugins/core/hsize": "2"
+      #"/org/compiz/profiles/unity/plugins/core/vsize": "2"
+      # The space in the beginning of the following value is necessary,
       # it prevents ansible from translating the value into python objects:
       "/org/gnome/desktop/input-sources/sources": " [('xkb', 'us+colemak'), ('xkb', 'us'), ('xkb', 'ua'), ('xkb', 'ru')]"
       "/com/canonical/indicator/power/show-percentage": "true"
@@ -69,7 +70,7 @@
         name:
           # tools
           - dconf-editor
-          - gnome-panel #TODO: "gnome-desktop-item-edit {{ homedir }}/Desktop --create-new"
+          - gnome-panel
           # emacs and its plugins
           - emacs
           - yaml-mode
@@ -83,7 +84,6 @@
           - vim
           - goldendict
           - firefox
-          - google-chrome-stable
           - sqlite3
           - anki
           - vlc
@@ -96,6 +96,12 @@
           - backintime-qt4
         state: latest
 
+    - name: Install google chrome with a separate task
+      tags: apps
+      become: yes
+      apt:
+        deb:  https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+      
     - name: Install snap applications
       tags: apps
       become: yes
@@ -127,7 +133,7 @@
         - "dev/python"
         - "dev/study"
         - "backup"
-        - "Projects/vcs/"
+        - "Projects/vcs/" #TODO: this is for job
 
     - name: Ensure that autostart directory exists
       file:
@@ -219,23 +225,20 @@
         regexp: "^export EDITOR="
         line: 'export EDITOR="{{ editor_path }}"'
 
+    - name: Initialize personal Git repos
+      git:
+        repo: "{{ item.value }}"
+        dest: "{{ homedir }}/{{ item.key }}"
+      with_dict: "{{ git_repolist_personal }}"
+
     - name: Personal git config
       tags: git
       git_config:
         scope: local
-        repo: "{{ homedir }}{{ item }}"
+        repo: "{{ homedir }}{{ item.key }}"
         name: user.email
         value: nakutnyi@gmail.com
-      with_items: "{{ git_repolist_personal }}"
-
-    - name: Git config for job
-      tags: git
-      become: yes #Git config file in job repo has incorrect permissions
-      git_config:
-        repo: "{{ project_dir }}/vcs/"
-        scope: local
-        name: user.email
-        value: rnakutnyi@jerasoft.net
+      with_dict: "{{ git_repolist_personal }}"
 
     - name: Add aliases and tweaks
       lineinfile:
@@ -245,7 +248,7 @@
         - 'alias g="git"'
         - 'alias conf="cd {{ homedir }}/dev/ansible/ubuntu_config/"'
         # TODO: job stuff
-        - 'alias work="cd {{ project_dir }}/vcs" $$ source {{ project_dir }}/vcs-python-env/bin/activate'
+        - 'alias work="cd {{ project_dir }}/vcs $$ source {{ project_dir }}/vcs-python-env/bin/activate"'
         - 'PATH="$PATH:/usr/local/bin/vendor/bin/"'
 
     - name: Add aliases autocompletion
