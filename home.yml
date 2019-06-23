@@ -248,7 +248,7 @@
         - 'alias g="git"'
         - 'alias conf="cd {{ homedir }}/dev/ansible/ubuntu_config/"'
         # TODO: job stuff
-        - 'alias work="cd {{ project_dir }}/vcs $$ source {{ project_dir }}/vcs-python-env/bin/activate"'
+        - 'alias work="cd {{ project_dir }}/vcs; source {{ project_dir }}/vcs-python-env/bin/activate"'
         - 'PATH="$PATH:/usr/local/bin/vendor/bin/"'
 
     - name: Add aliases autocompletion
