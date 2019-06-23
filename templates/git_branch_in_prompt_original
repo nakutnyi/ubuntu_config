@@ -1,10 +1,9 @@
 # Add git branch if its present to PS1
-color_prompt=yes
 parse_git_branch() {
  git rev-parse --abbrev-ref HEAD 2> /dev/null
 }
 if [ "$color_prompt" = yes ]; then
- PS1=$PS1'\[\033[01;33m\]($(parse_git_branch))\[\033[00m\]\$'
+ PS1=$PS1'\[\033[01;33m\]($(parse_git_branch))\[\033[00m\]\$ '
 else
  PS1=$PS1'$(parse_git_branch)\$ '
 fi

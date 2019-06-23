@@ -258,7 +258,7 @@
         - 'alias work="cd {{ project_dir }}/vcs; source {{ project_dir }}/vcs-python-env/bin/activate"'
         - 'PATH="$PATH:/usr/local/bin/vendor/bin/"'
 
-    - name: Add aliases autocompletion
+    - name: Add autocompletion for aliases
       blockinfile:
         marker: "# {mark} ANSIBLE MANAGED BLOCK (autocompletion)"
         path: "{{ homedir }}/.bashrc"
@@ -277,6 +277,13 @@
         path: "{{ homedir }}/.bashrc"
         regexp: "#?unset color_prompt force_color_prompt"
         line: "#unset color_prompt force_color_prompt"
+
+    - name: Prepare to add git branch output, remove trailing spaces from prompt
+      tags: gitbranch
+      replace:
+        dest: "{{ homedir }}/.bashrc"
+        regexp: "^( *)PS1='(.*) '$"
+        replace: "\\1PS1='\\2'"
 
     - name: Add git branch output to your terminal prompt
       tags: gitbranch
