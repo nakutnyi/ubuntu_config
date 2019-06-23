@@ -9,7 +9,7 @@
     favourite_editor: vim.basic #TODO: are you sure?
     project_dir: "{{ homedir }}Projects/" #this is for job
     #TODO: recheck global git config
-    git_config_global:
+    global_git_config:
       user.name: Roman Nakutnyi
       user.email: rnakutnyi@jerasoft.net #TODO: this is for job
       color.ui: auto
@@ -241,6 +241,14 @@
         name: user.email
         value: nakutnyi@gmail.com
       with_dict: "{{ git_repolist_personal }}"
+
+    - name: Global git config
+      tags: git
+      become: yes
+      git_config:
+        name: "{{ item.key }}"
+        value: "{{ item.value }}"
+      with_dict: "{{ global_git_config }}"
 
     - name: Add aliases and tweaks
       lineinfile:
