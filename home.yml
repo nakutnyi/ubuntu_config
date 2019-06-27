@@ -115,6 +115,7 @@
         - psutil
         # TODO: not sure if it must be here
         - formencode
+        - cookiecutter
 
     - name: Create directories
       become: yes
@@ -255,8 +256,9 @@
         - 'alias conf="cd {{ homedir }}/dev/ansible/ubuntu_config/"'
         - 'alias v="vagrant"'
         # TODO: job stuff
-        - 'alias work="cd {{ project_dir }}/vcs; source {{ project_dir }}/vcs-python-env/bin/activate"'
         - 'PATH="$PATH:/usr/local/bin/vendor/bin/"'
+        - 'alias work="cd {{ project_dir }}/vcs; source {{ project_dir }}/vcs-python-env/bin/activate"'
+        - 'if [ "$PWD" = {{ project_dir }}vcs ]; then { source {{ project_dir }}/vcs-python-env/bin/activate; } fi' 
 
     - name: Add autocompletion for aliases
       blockinfile:
