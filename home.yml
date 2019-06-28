@@ -257,7 +257,7 @@
         # TODO: job stuff
         - 'PATH="$PATH:/usr/local/bin/vendor/bin/"'
         - 'alias work="cd {{ project_dir }}/vcs; source {{ project_dir }}/vcs-python-env/bin/activate"'
-        - 'if [ "$PWD" = {{ project_dir }}vcs ]; then { source {{ project_dir }}/vcs-python-env/bin/activate; } fi' 
+        - 'if [[ "$PWD" = {{ project_dir }}vcs* ]]; then { source {{ project_dir }}/vcs-python-env/bin/activate; } fi' 
 
     - name: Add autocompletion for aliases
       blockinfile:
