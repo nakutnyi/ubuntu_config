@@ -6,9 +6,9 @@
     homedir: /home/roman/
     user: roman
     group: roman
-    favourite_editor: vim.basic #TODO: are you sure?
-    project_dir: "{{ homedir }}Projects/" #this is for job
-    #TODO: recheck global git config
+    favourite_editor: vim.basic
+    project_dir: "{{ homedir }}Projects/" #TODO: this is for job
+    #TODO: review global git config
     global_git_config:
       user.name: Roman Nakutnyi
       user.email: rnakutnyi@jerasoft.net #TODO: this is for job
@@ -113,9 +113,8 @@
       with_items:
         # psutil is necessary for current ansible playbook
         - psutil
-        # TODO: not sure if it must be here
-        - formencode
-        - cookiecutter
+        #- formencode
+        #- cookiecutter
 
     - name: Create directories
       become: yes
@@ -149,7 +148,7 @@
       with_items:
         - goldendict
         - firefox
-        - google-chrome
+        - chromium-browser
 
     - name: Dconf configuration
       tags: dconf
