@@ -39,13 +39,13 @@
       # Make workspaces same as in Ubuntu 18.04
       "/org/compiz/profiles/unity/plugins/core/hsize": "1"
       "/org/compiz/profiles/unity/plugins/core/vsize": "4"
-      # The space in the beginning of the following value is necessary,
+      # The space in front of the following value is necessary,
       # it prevents ansible from translating the value into python objects:
       "/org/gnome/desktop/input-sources/sources": " [('xkb', 'us+colemak'), ('xkb', 'us'), ('xkb', 'ua'), ('xkb', 'ru')]"
       # Minor tweaks
       "/com/canonical/indicator/power/show-percentage": "true"
       "/org/gnome/desktop/interface/clock-show-seconds": "true"
-      # Below entries do not work, I leave them below for a reference for manual fix:
+      # Below entries do not work, I leave them below for a reference for manual fix in Ubuntu 16.94:
       #"/org/compiz/profiles/unity/plugins/grid/put-maximize-key": "<Control><Super>Up"
       #"/org/compiz/profiles/unity/plugins/grid/right-maximize": "<Control><Super>Right"
       #"/org/compiz/profiles/unity/plugins/grid/put-restore-key": "<Control><Super>Down"
@@ -257,7 +257,8 @@
         # TODO: job stuff
         - 'PATH="$PATH:/usr/local/bin/vendor/bin/"'
         - 'alias work="cd {{ project_dir }}/vcs; source {{ project_dir }}/vcs-python-env/bin/activate"'
-        - 'if [[ "$PWD" = {{ project_dir }}vcs* ]]; then { source {{ project_dir }}/vcs-python-env/bin/activate; } fi' 
+        - 'if [[ "$PWD" = {{ project_dir }}vcs* ]]; then { source {{ project_dir }}/vcs-python-env/bin/activate; } fi'
+        - 'export LXC_ENABLED=1' 
 
     - name: Add autocompletion for aliases
       blockinfile:
