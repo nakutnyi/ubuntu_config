@@ -129,6 +129,7 @@
         - "dev/python"
         - "dev/study"
         - "backup"
+        - "config"
         - "Projects/vcs/" #TODO: this is for job
 
     - name: Ensure that autostart directory exists
