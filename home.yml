@@ -113,7 +113,6 @@
       with_items:
         # psutil is necessary for current ansible playbook
         - psutil
-        #- formencode
         #- cookiecutter
 
     - name: Create directories
@@ -251,6 +250,7 @@
         line: "{{ item }}"
       #TODO: move aliases to ~/.bash_aliases
       with_items:
+        - 'HISTTIMEFORMAT="%d/%m/%y %T "'
         - 'alias g="git"'
         - 'alias conf="cd {{ homedir }}/dev/ansible/ubuntu_config/"'
         - 'alias v="vagrant"'
