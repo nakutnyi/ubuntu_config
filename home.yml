@@ -113,7 +113,6 @@
       with_items:
         # psutil is necessary for current ansible playbook
         - psutil
-        #- formencode
         #- cookiecutter
 
     - name: Create directories
@@ -247,19 +246,27 @@
       with_dict: "{{ global_git_config }}"
 
     - name: Add aliases and tweaks
+      tags: bashrc
       lineinfile:
         dest: "{{ homedir }}/.bashrc"
         line: "{{ item }}"
       #TODO: move aliases to ~/.bash_aliases
       with_items:
+        - 'HISTTIMEFORMAT="%d/%m/%y %T "'
         - 'alias g="git"'
         - 'alias conf="cd {{ homedir }}/dev/ansible/ubuntu_config/"'
         - 'alias v="vagrant"'
         # TODO: job stuff
         - 'PATH="$PATH:/usr/local/bin/vendor/bin/"'
+<<<<<<< HEAD
+        - 'alias work="cd /home/roman/Projects//vcs; if ! [ \`which python\` == *\"vcs-python-env\"* ]; then source /home/roman/Projects//vcs-python-env/bin/activate; fi"'
+        - 'if [[ "$PWD" = {{ project_dir }}vcs* ]]; then { source {{ project_dir }}/vcs-python-env/bin/activate; } fi'
+        - 'export LXC_ENABLED="1"' 
+=======
         - 'alias work="cd {{ project_dir }}/vcs; source {{ project_dir }}/vcs-python-env/bin/activate"'
         - 'if [[ "$PWD" = {{ project_dir }}vcs* ]]; then { source {{ project_dir }}/vcs-python-env/bin/activate; } fi'
         - 'export LXC_ENABLED=1' 
+>>>>>>> ee9971b7872c8106f024c7a91b6305b8e556a6c1
 
     - name: Add autocompletion for aliases
       blockinfile:
