@@ -258,7 +258,7 @@
         - 'alias v="vagrant"'
         # TODO: job stuff
         - 'PATH="$PATH:/usr/local/bin/vendor/bin/"'
-        - 'alias work="cd /home/roman/Projects//vcs; if ! [ \`which python\` == *\"vcs-python-env\"* ]; then source /home/roman/Projects//vcs-python-env/bin/activate; fi"'
+        - 'alias work="cd ~/Projects//vcs; if ! [[ \`which python\` == *\"vcs-python-env\"* ]]; then source ~/Projects//vcs-python-env/bin/activate; fi"'
         - 'if [[ "$PWD" = {{ project_dir }}vcs* ]]; then { source {{ project_dir }}/vcs-python-env/bin/activate; } fi'
         - 'export LXC_ENABLED=1' 
 
