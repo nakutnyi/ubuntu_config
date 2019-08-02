@@ -245,6 +245,7 @@
       with_dict: "{{ global_git_config }}"
 
     - name: Add aliases and tweaks
+      tags: bashrc
       lineinfile:
         dest: "{{ homedir }}/.bashrc"
         line: "{{ item }}"
@@ -256,7 +257,7 @@
         - 'alias v="vagrant"'
         # TODO: job stuff
         - 'PATH="$PATH:/usr/local/bin/vendor/bin/"'
-        - 'alias work="cd {{ project_dir }}/vcs; source {{ project_dir }}/vcs-python-env/bin/activate"'
+        - 'alias work="cd /home/roman/Projects//vcs; if ! [ \`which python\` == *\"vcs-python-env\"* ]; then source /home/roman/Projects//vcs-python-env/bin/activate; fi"'
         - 'if [[ "$PWD" = {{ project_dir }}vcs* ]]; then { source {{ project_dir }}/vcs-python-env/bin/activate; } fi'
         - 'export LXC_ENABLED="1"' 
 
