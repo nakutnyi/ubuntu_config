@@ -55,7 +55,7 @@
   tasks:
 
     - name: Add repositories
-      tags: apps
+      tags: [ apps, repos ]
       become: yes
       apt_repository:
         repo: "{{ item }}"
@@ -63,9 +63,10 @@
       with_items:
         - 'ppa:kelleyk/emacs'
         - 'ppa:bit-team/stable'
+        - 'ppa:linuxuprising/shutter'
     
     - name: install apt applications
-      tags: apps
+      tags: [ apps, apt ]
       become: yes
       apt:
         name:
@@ -98,14 +99,24 @@
           - backintime-qt4
         state: latest
 
+    - name: Update and upgrade apt packages
+      # Because the "latest" option in previous task doesn't always work
+      tags: [ apps, update ]
+      become: yes
+      apt: >
+        upgrade=yes
+        update_cache=yes
+        cache_valid_time=3600
+    
     - name: Install snap applications
-      tags: apps
+      tags: [ apps, snap ]
       become: yes
       snap:
         name:
           - telegram-desktop
 
     - name: Install python plugins for ansible
+      tags: [ apps, python ]
       become: yes
       pip:
         name: "{{ item }}"
