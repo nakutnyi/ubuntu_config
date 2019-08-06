@@ -190,6 +190,12 @@
         name: fs.inotify.max_user_watches
         value: 524288
 
+    - name: Tweak for vcs sip correct work (under LXC)
+      become: yes
+      sysctl:
+        name: net.core.rmem_max
+        value: 1572864 
+
     - name: Allow for long command line history within a bash session
       replace:
         path: "{{ homedir }}/.bashrc"
