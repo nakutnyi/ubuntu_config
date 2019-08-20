@@ -92,6 +92,7 @@
           - vlc
           # for development
           - gitk
+          - meld
           # for external drive encryption
           - gnome-disk-utility
           - cryptsetup
@@ -190,6 +191,7 @@
         name: fs.inotify.max_user_watches
         value: 524288
 
+    # Job stuff
     - name: Tweak for vcs sip correct work (under LXC)
       become: yes
       sysctl:
