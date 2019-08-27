@@ -98,6 +98,8 @@
           - cryptsetup
           # for backups
           - backintime-qt4
+          # job stuff
+          - lxd-client
         state: latest
 
     - name: Update and upgrade apt packages
