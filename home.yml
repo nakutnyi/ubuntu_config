@@ -1,17 +1,18 @@
 ---
 
 - hosts: localhost
+  #TODO: move job-related variables to a separate encrypted file
 
   vars:
     homedir: /home/roman/
     user: roman
     group: roman
     favourite_editor: vim.basic
-    project_dir: "{{ homedir }}Projects/" #TODO: this is for job
+    project_dir: "{{ homedir }}Projects/" #job stuff
     #TODO: review global git config
     global_git_config:
       user.name: Roman Nakutnyi
-      user.email: rnakutnyi@jerasoft.net #TODO: this is for job
+      user.email: rnakutnyi@jerasoft.net #job email
       color.ui: auto
       core.pager: "less -FRSX"
       branch.autosetupmerge: true
@@ -143,7 +144,7 @@
         - "dev/study"
         - "backup"
         - "config"
-        - "Projects/vcs/" #TODO: this is for job
+        - "Projects/vcs/" #job stuff
 
     - name: Ensure that autostart directory exists
       file:
