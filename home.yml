@@ -128,6 +128,8 @@
       with_items:
         # psutil is necessary for current ansible playbook
         - psutil
+        # job stuff
+        - git-review
         #- cookiecutter
 
     - name: Create directories
