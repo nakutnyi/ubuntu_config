@@ -40,18 +40,21 @@
       # Make workspaces same as in Ubuntu 18.04
       "/org/compiz/profiles/unity/plugins/core/hsize": "1"
       "/org/compiz/profiles/unity/plugins/core/vsize": "4"
+      # Prepare a placeholder for gsettings mapping (Alt+BS->Caps Lock)
+      "/org/gnome/settings-daemon/plugins/media-keys": "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/']"
       # The space in front of the following value is necessary,
       # it prevents ansible from translating the value into python objects:
       "/org/gnome/desktop/input-sources/sources": " [('xkb', 'us+colemak'), ('xkb', 'us'), ('xkb', 'ua'), ('xkb', 'ru')]"
       # Minor tweaks
       "/com/canonical/indicator/power/show-percentage": "true"
       "/org/gnome/desktop/interface/clock-show-seconds": "true"
-      # Below entries do not work, I leave them below for a reference for manual fix in Ubuntu 16.94:
+      # Below entries do not work, I leave them below for a reference for manual fix in Ubuntu 16.04:
       #"/org/compiz/profiles/unity/plugins/grid/put-maximize-key": "<Control><Super>Up"
       #"/org/compiz/profiles/unity/plugins/grid/right-maximize": "<Control><Super>Right"
       #"/org/compiz/profiles/unity/plugins/grid/put-restore-key": "<Control><Super>Down"
       #"/org/compiz/profiles/unity/plugins/grid/left-maximize": "<Control><Super>Left"
 
+    gsettings_schemapath: "org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"
 
   tasks:
 
@@ -72,6 +75,7 @@
       apt:
         name:
           # tools
+          - xdotool
           - dconf-editor
           - gnome-panel
           # emacs and its plugins
@@ -175,12 +179,29 @@
         state: present
       with_dict: "{{ dconf_config }}"
 
-    - name: Use CapsLock as CapsLock, not Backspace
-      become: yes
-      replace:
-        path: "/usr/share/X11/xkb/symbols/us"
-        regexp: '(^    key <CAPS> { \[    BackSpace,    BackSpace,       BackSpace,        BackSpace \] };)$'
-        replace: '//\1' 
+    #- name: Use CapsLock as CapsLock, not Backspace
+    #- become: yes
+    #- replace:
+    #-   path: "/usr/share/X11/xkb/symbols/us"
+    #-   regexp: '(^    key <CAPS> { \[    BackSpace,    BackSpace,       BackSpace,        BackSpace \] };)$'
+    #-   replace: '//\1' 
+
+    - name: Remap Alt+BackSpace to Caps Lock since Caps Lock is remapped to BS
+      tags: dconf # not actually dconf, but related
+      command: "gsettings set {{ gsettings_schemapath }} {{ item.key }} {{ item.value }}"
+      with_dict:
+        "name": "Alt_Backspace_to_Caps_Lock"
+        "binding": "'<Alt>BackSpace'"
+
+    - name: Remap Alt+BackSpace to Caps Lock (separate task for args with spaces)
+      tags: dconf # not actually dconf, but related
+      command: 
+        argv:
+          - gsettings
+          - set
+          - "{{ gsettings_schemapath }}"
+          - command
+          - xdotool key Caps_Lock
 
     - name: Allow core dumps for the user (for C debugging)
       become: yes
