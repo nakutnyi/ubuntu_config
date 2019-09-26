@@ -98,6 +98,7 @@
           # for development
           - gitk
           - meld
+          - libecpg-dev  # postgres-C library for pgsanity
           # for external drive encryption
           - gnome-disk-utility
           - cryptsetup
@@ -133,8 +134,10 @@
         # psutil is necessary for current ansible playbook
         - psutil
         # job stuff
+        - pytest
         - git-review
-        #- cookiecutter
+        - cookiecutter
+        - pgsanity  # postgres sql syntax checker
 
     - name: Create directories
       become: yes
