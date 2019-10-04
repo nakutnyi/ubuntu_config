@@ -193,8 +193,8 @@
       tags: dconf # not actually dconf, but related
       command: "gsettings set {{ gsettings_schemapath }} {{ item.key }} {{ item.value }}"
       with_dict:
-        "name": "Alt_Backspace_to_Caps_Lock"
-        "binding": "'<Alt>BackSpace'"
+        "name": "Ctrl_Backspace_to_Caps_Lock"
+        "binding": "'<Ctrl>BackSpace'"
 
     - name: Remap Alt+BackSpace to Caps Lock (separate task for args with spaces)
       tags: dconf # not actually dconf, but related
