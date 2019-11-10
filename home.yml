@@ -29,6 +29,7 @@
       alias.dt: difftool
       alias.gr: grep
       alias.br: branch
+      alias.nicebr: for-each-ref --sort=committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'
       diff.tool: meld
     git_repolist_personal:
       - "dev/ansible/ubuntu_config": "git@github.com:nakutnyi/ubuntu_config.git"
