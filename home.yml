@@ -307,7 +307,7 @@
         - 'alias v="vagrant"'
         # job stuff
         - 'PATH="$PATH:/usr/local/bin/vendor/bin/"'
-        - 'VCS_CUSTOM_PROVISION="~/config/vcs_custom_provision.sh"'
+        - 'export VCS_CUSTOM_PROVISION="{{ homedir }}/config/vcs_custom_provision.sh"'
           #TODO: rework alias for multiple active repository clones (different tasks and versions)
         - 'alias work="cd ~/Projects//vcs; if ! [[ \`which python\` == *\"vcs-python-env\"* ]]; then source ~/Projects//vcs-python-env/bin/activate; fi"'
         - 'if [[ "$PWD" = {{ project_dir }}vcs* ]]; then { source {{ project_dir }}/vcs-python-env/bin/activate; } fi'
