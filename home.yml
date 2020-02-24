@@ -8,11 +8,10 @@
     user: roman
     group: roman
     favourite_editor: vim.basic
-    project_dir: "{{ homedir }}Projects/" #job stuff
     #TODO: review global git config
     global_git_config:
       user.name: Roman Nakutnyi
-      user.email: rnakutnyi@jerasoft.net #job email
+      user.email: nakutnyi@ajax.systems #job email
       color.ui: auto
       core.pager: "less -FRSX"
       branch.autosetupmerge: true
@@ -68,7 +67,6 @@
       with_items:
         - 'ppa:kelleyk/emacs'
         - 'ppa:bit-team/stable'
-        - 'ppa:linuxuprising/shutter'
     
     - name: install apt applications
       tags: [ apps, apt ]
@@ -86,7 +84,8 @@
           - python3-tk
           - pylint
           - pylint3
-          - python-pip
+          - python3-pip
+          - python-dev
           # miscellaneous
           - chromium-browser
           - shutter
@@ -129,6 +128,7 @@
       tags: [ apps, python ]
       become: yes
       pip:
+        executable: '/usr/bin/pip3'  # TODO unhardcode
         name: "{{ item }}"
         state: present
       with_items:
@@ -136,9 +136,6 @@
         - psutil
         # job stuff
         - pytest
-        - git-review
-        - cookiecutter
-        - pgsanity  # postgres sql syntax checker
 
     - name: Create directories
       become: yes
@@ -154,7 +151,6 @@
         - "dev/study"
         - "backup"
         - "config"
-        - "Projects/vcs/" #job stuff
 
     - name: Ensure that autostart directory exists
       file:
@@ -220,13 +216,6 @@
       sysctl:
         name: fs.inotify.max_user_watches
         value: 524288
-
-    # Job stuff
-    - name: Tweak for vcs sip correct work (under LXC)
-      become: yes
-      sysctl:
-        name: net.core.rmem_max
-        value: 1572864 
 
     - name: Allow for long command line history within a bash session
       replace:
@@ -305,13 +294,6 @@
         - 'alias g="git"'
         - 'alias conf="cd {{ homedir }}/dev/ansible/ubuntu_config/"'
         - 'alias v="vagrant"'
-        # job stuff
-        - 'PATH="$PATH:/usr/local/bin/vendor/bin/"'
-        - 'export VCS_CUSTOM_PROVISION="{{ homedir }}/config/vcs_custom_provision.sh"'
-          #TODO: rework alias for multiple active repository clones (different tasks and versions)
-        - 'alias work="cd ~/Projects//vcs; if ! [[ \`which python\` == *\"vcs-python-env\"* ]]; then source ~/Projects//vcs-python-env/bin/activate; fi"'
-        - 'if [[ "$PWD" = {{ project_dir }}vcs* ]]; then { source {{ project_dir }}/vcs-python-env/bin/activate; } fi'
-        - 'export LXC_ENABLED=1' 
 
     - name: Add autocompletion for aliases
       blockinfile:
