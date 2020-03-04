@@ -138,6 +138,7 @@
         - pytest
 
     - name: Create directories
+      tags: dirs
       become: yes
       file:
         path: "{{ homedir }}/{{ item }}" 
@@ -151,6 +152,7 @@
         - "dev/study"
         - "backup"
         - "config"
+        - "work"
 
     - name: Ensure that autostart directory exists
       file:
