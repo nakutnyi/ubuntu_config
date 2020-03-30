@@ -9,7 +9,7 @@
     favourite_editor: vim.basic
     global_git_config:
       user.name: Roman Nakutnyi
-      user.email: nakutnyi@gmail.com
+      user.email: nakutnyi.r@ajax.systems
       rerere.enabled: true
       alias.st: status
       alias.pr: 'pull --rebase'
@@ -266,13 +266,13 @@
         value: "{{ item.value }}"
       with_dict: "{{ global_git_config }}"
 
-    - name: Job git config
+    - name: Personal git config
       tags: git
       git_config:
         scope: local
         repo: "{{ homedir }}{{ item.key }}"
         name: user.email
-        value: nakutnyi.r@ajax.systems
+        value: nakutnyi@gmail.com
       with_dict: "{{ git_repolist_personal }}"
 
     - name: Add aliases and tweaks
