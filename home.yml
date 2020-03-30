@@ -1,31 +1,20 @@
 ---
 
 - hosts: localhost
-  #TODO: move job-related variables to a separate encrypted file
 
   vars:
     homedir: /home/roman/
     user: roman
     group: roman
     favourite_editor: vim.basic
-    #TODO: review global git config
     global_git_config:
       user.name: Roman Nakutnyi
-      user.email: nakutnyi@ajax.systems #job email
-      color.ui: auto
-      core.pager: "less -FRSX"
-      branch.autosetupmerge: true
-      apply.whitespace: nowarn
-      status.showuntrackedfiles: all
-      push.default: tracking
-      rebase.stat: true
+      user.email: nakutnyi@gmail.com
       rerere.enabled: true
-      gitreview.remote: origin
       alias.st: status
       alias.pr: 'pull --rebase'
       alias.co: checkout
       alias.cm: commit
-      alias.dt: difftool
       alias.gr: grep
       alias.br: branch
       alias.nicebr: for-each-ref --sort=committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'
@@ -85,7 +74,7 @@
           - pylint
           - pylint3
           - python3-pip
-          - python-dev
+          - python3-dev
           # miscellaneous
           - chromium-browser
           - shutter
@@ -260,20 +249,12 @@
         regexp: "^export EDITOR="
         line: 'export EDITOR="{{ editor_path }}"'
 
-    - name: Initialize personal Git repos
+    - name: Initialize Git repos
+      tags: git
       git:
         update: no
         repo: "{{ item.value }}"
         dest: "{{ homedir }}/{{ item.key }}"
-      with_dict: "{{ git_repolist_personal }}"
-
-    - name: Personal git config
-      tags: git
-      git_config:
-        scope: local
-        repo: "{{ homedir }}{{ item.key }}"
-        name: user.email
-        value: nakutnyi@gmail.com
       with_dict: "{{ git_repolist_personal }}"
 
     - name: Global git config
@@ -283,6 +264,15 @@
         name: "{{ item.key }}"
         value: "{{ item.value }}"
       with_dict: "{{ global_git_config }}"
+
+    - name: Job git config
+      tags: git
+      git_config:
+        scope: local
+        repo: "{{ homedir }}{{ item.key }}"
+        name: user.email
+        value: nakutnyi.r@ajax.systems
+      with_dict: "{{ git_repolist_personal }}"
 
     - name: Add aliases and tweaks
       tags: bashrc
