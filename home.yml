@@ -75,6 +75,7 @@
           - pylint3
           - python3-pip
           - python3-dev
+          - virtualenv
           # miscellaneous
           - chromium-browser
           - shutter
