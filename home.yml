@@ -54,6 +54,7 @@
         repo: "{{ item }}"
         state: present
       with_items:
+        - 'ppa:git-core/ppa'
         - 'ppa:kelleyk/emacs'
         - 'ppa:bit-team/stable'
     
@@ -86,6 +87,7 @@
           - anki
           - vlc
           # for development
+          - git
           - gitk
           - meld
           - libecpg-dev  # postgres-C library for pgsanity
