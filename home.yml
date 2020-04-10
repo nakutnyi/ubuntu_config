@@ -7,7 +7,7 @@
     user: roman
     group: roman
     favourite_editor: vim.basic
-    global_git_config:
+    git_config_global:
       user.name: Roman Nakutnyi
       user.email: nakutnyi.r@ajax.systems
       rerere.enabled: true
@@ -266,7 +266,13 @@
       git_config:
         name: "{{ item.key }}"
         value: "{{ item.value }}"
-      with_dict: "{{ global_git_config }}"
+      with_dict: "{{ git_config_global }}"
+
+    - name: A kludge to prevent user git config from taking action
+      tags: git
+      file:
+        path: "{{ homedir }}/.gitconfig"
+        state: absent
 
     - name: Personal git config
       tags: git
