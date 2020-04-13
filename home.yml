@@ -293,7 +293,7 @@
         - 'HISTTIMEFORMAT="%d/%m/%y %T "'
         - 'alias g="git"'
         - 'alias conf="cd {{ homedir }}/dev/ansible/ubuntu_config/"'
-        - 'alias v="vagrant"'
+        - 'alias work="cd {{ homedir }}/dev/ajax/hub_tests/ && source ./venv/bin/activate"'
 
     - name: Add autocompletion for aliases
       blockinfile:
