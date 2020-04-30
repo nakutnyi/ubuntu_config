@@ -294,6 +294,7 @@
         - 'alias g="git"'
         - 'alias conf="cd {{ homedir }}/dev/ansible/ubuntu_config/"'
         - 'alias work="cd {{ homedir }}/dev/ajax/hub_tests/ && source ./venv/bin/activate"'
+        - 'alias c=clear'
 
     - name: Add autocompletion for aliases
       blockinfile:
