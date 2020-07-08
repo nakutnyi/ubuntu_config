@@ -33,7 +33,7 @@
       "/org/gnome/settings-daemon/plugins/media-keys": "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/']"
       # The space in front of the following value is necessary,
       # it prevents ansible from translating the value into python objects:
-      "/org/gnome/desktop/input-sources/sources": " [('xkb', 'us+colemak'), ('xkb', 'us'), ('xkb', 'ua'), ('xkb', 'ru')]"
+      "/org/gnome/desktop/input-sources/sources": " [('xkb', 'us+colemak'), ('xkb', 'us'), ('xkb', 'ua')]"
       # Minor tweaks
       "/com/canonical/indicator/power/show-percentage": "true"
       "/org/gnome/desktop/interface/clock-show-seconds": "true"
