@@ -294,7 +294,6 @@
         - 'alias g="git"'
         - 'alias conf="cd {{ homedir }}/dev/ansible/ubuntu_config/"'
         - 'alias work="cd {{ homedir }}/dev/"'
-        - 'alias c=clear'
         - 'alias pc=pycharm-community'
 
     - name: Add autocompletion for aliases
