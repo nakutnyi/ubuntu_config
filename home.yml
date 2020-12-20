@@ -9,7 +9,7 @@
     favourite_editor: vim.basic
     git_config_global:
       user.name: Roman Nakutnyi
-      user.email: nakutnyi.r@ajax.systems
+      user.email: nakutnyi@gmail.com
       rerere.enabled: true
       alias.st: status
       alias.pr: 'pull --rebase'
