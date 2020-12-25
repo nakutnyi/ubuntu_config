@@ -21,7 +21,6 @@
       diff.tool: meld
     git_repolist_personal:
       - "dev/ansible/ubuntu_config": "git@github.com:nakutnyi/ubuntu_config.git"
-      - "dev/study/programming_study": "git@github.com:nakutnyi/programming_study.git"
       - "dev/python/pomodoro-timer": "git@github.com:nakutnyi/pomodoro-timer.git"
       - ".emacs.d/": "git@github.com:nakutnyi/emacs_config.git"
 
