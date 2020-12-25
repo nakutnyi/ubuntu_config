@@ -162,6 +162,7 @@
       with_items:
         - goldendict
         - firefox
+        - transmission-gtk
         #- chromium-browser
 
     - name: Dconf configuration
