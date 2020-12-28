@@ -63,7 +63,8 @@
       apt:
         name:
           # tools
-          - fish # additional shell
+          - fish  # additional shell
+          - zsh  # yet another shell
           - xdotool
           - dconf-editor
           - gnome-panel
@@ -115,6 +116,7 @@
       snap:
         name:
           - telegram-desktop
+          - docker
 
     - name: Install python plugins for ansible
       tags: [ apps, python ]
