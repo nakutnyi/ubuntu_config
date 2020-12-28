@@ -116,7 +116,7 @@
       snap:
         name:
           - telegram-desktop
-          - docker
+          - tmux
 
     - name: Install python plugins for ansible
       tags: [ apps, python ]
