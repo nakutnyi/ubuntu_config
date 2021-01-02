@@ -219,15 +219,18 @@
       shell: "which {{ favourite_editor }}"
       register: command_output
 
-    - name: Set editor_path variable
+    - name: Set editor_path variable (used in the next step)
       set_fact:
         editor_path: "{{ command_output.stdout_lines[0] }}"
 
-    - name: Setup selected editor in a config file
+    - name: Setup fish config file
       lineinfile:
         create: yes
         dest: "{{ homedir }}/.config/fish/config.fish"
-        line: "setenv EDITOR {{ editor_path }}"
+        line: "{{ item }}"
+      with_items:
+        - "setenv EDITOR {{ editor_path }}"
+        - "setenv DOCKER_HIDE_LEGACY_COMMANDS true"
 
     - name: Initialize Git repos
       tags: git
