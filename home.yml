@@ -118,6 +118,7 @@
           - telegram-desktop
           - tmux
           - tree
+          - postman
 
     - name: Install python plugins for ansible
       tags: [ apps, python ]
