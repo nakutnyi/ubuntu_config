@@ -68,6 +68,7 @@
           - xdotool
           - dconf-editor
           - gnome-panel
+          - simplescreenrecorder
           # emacs and its plugins
           - emacs
           - yaml-mode
