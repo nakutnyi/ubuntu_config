@@ -9,7 +9,7 @@
     favourite_editor: vim.basic
     git_config_global:
       user.name: Roman Nakutnyi
-      user.email: nakutnyi@gmail.com
+      user.email: roman.nakutnyi@chisw.com
       rerere.enabled: true
       alias.st: status
       alias.pr: 'pull --rebase'
@@ -68,7 +68,6 @@
           - xdotool
           - dconf-editor
           - gnome-panel
-          - simplescreenrecorder
           # emacs and its plugins
           - emacs
           - yaml-mode
@@ -81,13 +80,15 @@
           - virtualenv
           # miscellaneous
           - chromium-browser
+          - firefox
           - shutter
           - vim
           - goldendict
-          - firefox
           - sqlite3
           - anki
           - vlc
+          - simplescreenrecorder
+          - inkscape
           # for development
           - git
           - gitk
