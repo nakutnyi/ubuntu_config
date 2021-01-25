@@ -10,6 +10,7 @@
     git_config_global:
       user.name: Roman Nakutnyi
       user.email: roman.nakutnyi@chisw.com
+      blame.ignoreRevsFile: .ignored_revs  # for black
       rerere.enabled: true
       alias.st: status
       alias.pr: 'pull --rebase'
