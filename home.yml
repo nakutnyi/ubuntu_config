@@ -56,6 +56,7 @@
         - 'ppa:git-core/ppa'
         - 'ppa:kelleyk/emacs'
         - 'ppa:bit-team/stable'
+        - 'ppa:deadsnakes/ppa'
     
     - name: install apt applications
       tags: [ apps, apt ]
