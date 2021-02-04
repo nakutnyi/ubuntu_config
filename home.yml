@@ -170,7 +170,7 @@
         dest: "{{ homedir }}.config/autostart/{{ item }}.desktop"
       with_items:
         - goldendict
-        - firefox
+        - google-chrome
         - transmission-gtk
         #- chromium-browser
 
