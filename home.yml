@@ -19,6 +19,7 @@
       alias.br: branch
       alias.nicebr: for-each-ref --sort=committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'
       diff.tool: meld
+      pull.rebase: true
     git_repolist_personal:
       - "dev/ansible/ubuntu_config": "git@github.com:nakutnyi/ubuntu_config.git"
       - "dev/python/pomodoro-timer": "git@github.com:nakutnyi/pomodoro-timer.git"
@@ -32,7 +33,7 @@
       "/org/gnome/settings-daemon/plugins/media-keys": "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/']"
       # The space in front of the following value is necessary,
       # it prevents ansible from translating the value into python objects:
-      "/org/gnome/desktop/input-sources/sources": " [('xkb', 'us+colemak'), ('xkb', 'us'), ('xkb', 'ua')]"
+      "/org/gnome/desktop/input-sources/sources": " [('xkb', 'us+colemak'), ('xkb', 'ua')]"
       # Minor tweaks
       "/com/canonical/indicator/power/show-percentage": "true"
       "/org/gnome/desktop/interface/clock-show-seconds": "true"
