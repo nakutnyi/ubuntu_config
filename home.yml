@@ -235,9 +235,6 @@
     - name: Setup fish config file
       lineinfile:
         create: yes
-    - name: Setup fish config file
-      lineinfile:
-        create: yes
         dest: "{{ homedir }}/.config/fish/config.fish"
         line: "{{ item }}"
       with_items:
