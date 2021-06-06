@@ -172,7 +172,10 @@
         - goldendict
         - google-chrome
         - transmission-gtk
-        #- chromium-browser
+        - chromium-browser
+        - firefox
+        - pycharm-community
+        - gnome-terminal
 
     - name: Dconf configuration
       tags: dconf
@@ -230,6 +233,11 @@
         editor_path: "{{ command_output.stdout_lines[0] }}"
 
     - name: Setup fish config file
+      lineinfile:
+        create: yes
+    - name: Setup fish config file
+      lineinfile:
+        create: yes
       lineinfile:
         create: yes
         dest: "{{ homedir }}/.config/fish/config.fish"
@@ -347,8 +355,3 @@
     - name: Add git branch output to your terminal prompt
       tags: gitbranch
       blockinfile:
-        marker: "# {mark} ANSIBLE MANAGED BLOCK (git branch in prompt)"
-        path: "{{ homedir }}/.bashrc"
-        block: "{{lookup('file', 'templates/git_branch_in_prompt')}}"
-        state: present
-
