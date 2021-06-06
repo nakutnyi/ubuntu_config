@@ -238,8 +238,6 @@
     - name: Setup fish config file
       lineinfile:
         create: yes
-      lineinfile:
-        create: yes
         dest: "{{ homedir }}/.config/fish/config.fish"
         line: "{{ item }}"
       with_items:
@@ -306,9 +304,7 @@
 
     - name: Setup selected editor in an environment variable
       lineinfile:
-        dest: "{{ homedir }}/.bashrc"
         regexp: "^export EDITOR="
-        line: 'export EDITOR="{{ editor_path }}"'
         dest: "{{ homedir }}/.config/fish/config.fish"
         line: "setenv EDITOR {{ editor_path }}"
 
