@@ -1,5 +1,6 @@
 ---
-
+# TODO: fish_variables.txt
+#
 - hosts: localhost
 
   vars:
@@ -351,3 +352,4 @@
         path: "{{ homedir }}/.bashrc"
         block: "{{lookup('file', 'templates/git_branch_in_prompt')}}"
         state: present
+

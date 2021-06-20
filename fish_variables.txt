@@ -1,0 +1,2 @@
+setenv EDITOR /usr/bin/vim.basic
+setenv DOCKER_HIDE_LEGACY_COMMANDS true
