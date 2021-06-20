@@ -1,6 +1,5 @@
 ---
-# TODO: fish_variables.txt
-#
+
 - hosts: localhost
 
   vars:
